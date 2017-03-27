@@ -7,6 +7,9 @@ package blackBoard.blackboardObjects;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Wrapper class for a list of words to be deciphered??
+ */
 public class CipherList extends BlackboardObject {
 	private List<String> data = new ArrayList<String>();
 	private int pos = 0;             // top of the stack

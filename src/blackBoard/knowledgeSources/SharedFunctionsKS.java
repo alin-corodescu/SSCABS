@@ -14,8 +14,13 @@ import blackBoard.Blackboard;
 import blackBoard.blackboardObjects.Counter;
 import blackBoard.blackboardObjects.TextObject;
 
+/**
+ * Class used to wrap shared functionalities between Knowledge Sources
+ */
 public class SharedFunctionsKS extends KnowledgeSource {
+	/** plain text solved by this KS */
 	protected TextObject plainText;
+    /** counter for unresolved words */
 	protected Counter unresolved;
 	protected String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -25,6 +30,11 @@ public class SharedFunctionsKS extends KnowledgeSource {
 		unresolved = (Counter) blackboard.layer("unresolved");
 	}
 
+    /**
+     * See definition of word code in the RFC
+     * @param word - string to turn into word code
+     * @return
+     */
 	// generates a word code from the string 
 	public String getWordPattern(String word) {
 		int nextNum = 0;

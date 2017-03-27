@@ -9,15 +9,73 @@
 // ----------------------------------------------------------------------------------------
 package blackBoard;
 
+import com.typesafe.config.ConfigException;
+
+import java.io.*;
+import java.net.Socket;
+
 public class WordServerInterface {
-	
-	// initialise the connection and logging in
-	public WordServerInterface() {
-		
-	}
-	
-	// receives a word code and returns an array of strings into the blackboard 
-	public String [] allPatterns(String pattern) {  
-		return null;		
-	}
+    private static final String hostname = "localhost";
+    private static final Integer port = 18877;
+    private static boolean connected = false;
+    private BufferedWriter bufferedWriter;
+    private BufferedReader socketReader;
+    private Socket serverSocket = null;
+
+    // initialise the connection and logging in
+    public WordServerInterface() {
+        String token;
+
+        try {
+            serverSocket = new Socket(hostname, port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        socketReader = null;
+        try {
+            InputStream socketStream = serverSocket.getInputStream();
+            socketReader = new BufferedReader(new InputStreamReader(socketStream));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            OutputStream outputStream = serverSocket.getOutputStream();
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+            if (!connected) {
+                String line = socketReader.readLine();
+                String[] tokens = line.split("\\+");
+                System.out.println("Line received : " + tokens[0] + " " + tokens[1]);
+                token = tokens[1];
+                token = token.substring(0, token.length() - 1);
+                String connectionString = "<" + " 1700331" + "*" + token + ">" + "\n";
+                bufferedWriter.write(connectionString);
+                bufferedWriter.flush(); //TODO mark this flush as "bug"
+                System.out.println(socketReader.readLine());
+                connected = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // receives a word code and returns an array of strings into the blackboard
+    public String[] allPatterns(String pattern) {
+        String[] words = null;
+        char[] test = new char[100000];
+        try {
+            try {
+                bufferedWriter.write(pattern + "\n");
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            bufferedWriter.flush();
+            socketReader.read(test);
+            String line = new String(test);
+            //System.out.println(line);
+            words = line.split(",");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return words;
+    }
 }

@@ -14,16 +14,21 @@ import blackBoard.Blackboard;
 import blackBoard.blackboardObjects.CipherLetter;
 import blackBoard.blackboardObjects.CipherList;
 
+/**
+ * each of the knowledge source will maybe offer a cipher key
+ */
 public class KnowledgeSource {
 	private String name;
-	protected Blackboard blackbord;
+	protected Blackboard blackboard;
+	// actual key of the cipher
 	protected CipherLetter cipherLetter;
+	// list of words to decipher - guess
 	protected CipherList cipherList;
 	
 	public KnowledgeSource(Blackboard blackboard, String name) {
-		this.blackbord = blackboard;
+		this.blackboard = blackboard;
 		this.name = name;
-		this.cipherLetter = (CipherLetter) blackbord.layer("cipherLetter");		
+		this.cipherLetter = (CipherLetter) this.blackboard.layer("cipherLetter");
 		this.cipherList = (CipherList) blackboard.layer("cipherList");
 	}
 
@@ -31,12 +36,22 @@ public class KnowledgeSource {
 		cipherLetter.update(cipher);		
 	}
 
-	// needs to be overridden  
+	// needs to be overridden
+
+	/**
+	 * function used to check if the knowledge source can contribute to the
+	 * cipher
+	 * @return
+	 */
 	public boolean is_eager_to_contribute() {
 		return false;
 	}
 	
-	// needs to be overridden  
+	// needs to be overridden
+
+	/**
+	 * functions used to actually contribute to the cipher
+	 */
 	public void contribute() {
 		System.out.println("Error in:" + this + " contribute() must be implemented in subclass.");
 	}

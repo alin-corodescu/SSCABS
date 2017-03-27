@@ -4,6 +4,9 @@
 // ----------------------------------------------------------------------------------------
 package blackBoard.blackboardObjects;
 
+/**
+ * Wrapper class for a counter (int)
+ */
 public class Counter extends BlackboardObject {
 	private int count = 0;
 

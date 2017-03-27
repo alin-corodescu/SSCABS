@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class used to represnt the key of the cipher
+ * in the form of Map<Character, List<Character>>
+ */
 public class CipherLetter extends BlackboardObject {
 	private Map<Character, List<Character>> data = getBlankMapping();
 	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -38,7 +42,13 @@ public class CipherLetter extends BlackboardObject {
 		}
 		for (int i = 0; i < cipherword.length(); i++) {
 			Character key = cipherword.charAt(i);
-			Character value = candidate.charAt(i);
+			Character value = '_';
+			try {
+				value = candidate.charAt(i);
+			}
+			catch (StringIndexOutOfBoundsException ex){
+					ex.printStackTrace();
+			}
 			if (!lm.get(key).contains(value)){
 				List<Character> valueList = lm.get(key);
 				valueList.add(value);

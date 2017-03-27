@@ -17,7 +17,7 @@ import blackBoard.Blackboard;
 import blackBoard.WordServerInterface;
 
 public class ReworkKS extends SharedFunctionsKS {
-	private WordServerInterface wp;
+	private WordServerInterface wp; // TODO connection initializes here
 
 	public ReworkKS(Blackboard blackboard, String name) {
 		super(blackboard, name);

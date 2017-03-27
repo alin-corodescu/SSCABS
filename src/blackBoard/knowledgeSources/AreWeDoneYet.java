@@ -9,6 +9,9 @@ package blackBoard.knowledgeSources;
 import blackBoard.Blackboard;
 import blackBoard.blackboardObjects.Counter;
 
+/**
+ * Class used to check progress, but wrapped as a SharedFunctionKS
+ */
 public class AreWeDoneYet extends SharedFunctionsKS {
 
 	public AreWeDoneYet(Blackboard blackboard, String name) {
@@ -20,7 +23,7 @@ public class AreWeDoneYet extends SharedFunctionsKS {
 	}
 	
 	public void contribute() {
-		Counter counter = (Counter) this.blackbord.layer("progress").get();
+		Counter counter = (Counter) this.blackboard.layer("progress").get();
 		counter.set(100);
 		
 	}

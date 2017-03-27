@@ -19,7 +19,7 @@ public class CommonWordsKS extends SharedFunctionsKS {
 
 	public CommonWordsKS(Blackboard blackboard, String name) {
 		super(blackboard, name);
-		wp = new WordServerInterface();
+		wp = new WordServerInterface(); // TODO: found the place connection happens
 	}
 
 	public boolean is_eager_to_contribute() {   // only process words that are greater
