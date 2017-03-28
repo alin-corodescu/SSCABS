@@ -21,11 +21,13 @@ public class Controller {
 				if (ks.is_eager_to_contribute()) {       // can the ks solve this kind of problem
 //					System.out.println("using: " + ks);  // useful when debugging
 					ks.contribute();                     // then do so
+                    //popping happens inside the contribute() function;
 				}
 				else {
 					count++;
 				}
 			}
+			// if none of the knowledge sources want to contribute
 			if (count == blackboard.experts().size()) {  // have we looped through everything
 				blackboard.layer("cipherList").pop();    // move on to the next word
 			}			

@@ -14,6 +14,9 @@ import java.util.Map;
 import blackBoard.Blackboard;
 import blackBoard.WordServerInterface;
 
+/**
+ * class which communicates with the server
+ */
 public class CommonWordsKS extends SharedFunctionsKS {
 	private WordServerInterface wp;
 
@@ -25,10 +28,13 @@ public class CommonWordsKS extends SharedFunctionsKS {
 	public boolean is_eager_to_contribute() {   // only process words that are greater
 		return cipherList.peek().length() >= 4; // than 3 characters in length
 	}
-	
+
+    /**
+     * gets the matches from the server and adds them to the server
+     */
 	public void contribute() {
 		Map<Character, List<Character>> cipher = cipherLetter.getBlankMapping(); // make an empty cipher map
-		String word = cipherList.pop();            // get the word
+		String word = cipherList.pop();             // get the word
 		String pattern = getWordPattern(word);     // calculate the word code
 		String [] words = wp.allPatterns(pattern); // get the array of strings from the word server 
 		if (words != null) {                       // check that we have data

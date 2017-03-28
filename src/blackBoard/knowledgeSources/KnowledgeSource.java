@@ -20,9 +20,9 @@ import blackBoard.blackboardObjects.CipherList;
 public class KnowledgeSource {
 	private String name;
 	protected Blackboard blackboard;
-	// actual key of the cipher
+	/** actual key of the cipher */
 	protected CipherLetter cipherLetter;
-	// list of words to decipher - guess
+	/** list of words to decipher - guess */
 	protected CipherList cipherList;
 	
 	public KnowledgeSource(Blackboard blackboard, String name) {

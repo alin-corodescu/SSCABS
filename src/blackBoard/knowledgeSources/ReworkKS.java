@@ -55,32 +55,47 @@ public class ReworkKS extends SharedFunctionsKS {
 		return cipherList.done() && stuffToFix();
 	}
 
+	/**
+	 * this one uses the plain text, not the encrypted one
+	 */
 	public void contribute() {
 		String plaintext = plainText.toString();
 		String nonletters = removeMatches(plaintext, alphabet + "_");
+		//get a list of words in the plain text
 		nonletters = removeDupes(nonletters);
 		plaintext = removeMatches(plaintext, nonletters.trim());
 		String [] plainList = plaintext.split(" ");
 		Map<Character, List<Character>> cipher = cipherLetter.getBlankMapping();
+
+		// for every word in the word list of the plain text
 		for (int index = 0; index < plainList.length; index++){
 			String word = plainList[index];
+			// if the word length is less than 3?
 			if (word.length() <= 3) {
 				continue;
 			}
+			// if the word contains an unidentified letter
 			if (word.contains("_")) {
+			    // get the cipher word != plain text word
 				String cipherword = cipherList.toList().get(index);
-				String pattern = getWordPattern(cipherword);
+				// ask the server about some suggestions
+                String pattern = getWordPattern(cipherword);
+                // get the response
 				String [] words = wp.allPatterns(pattern);
+				// find the best match
 				String candidate = bestMatch(word, words);
 				if (candidate != null && !candidate.isEmpty()) {
 					int pos = word.indexOf("_");
 					List<Character> temp = new ArrayList<Character>();
 					temp.add(candidate.charAt(pos));
+					// add the new match to cipher mapping
 					cipher.put(cipherword.charAt(pos), temp);
 				}
 			}
 		}
+		// update the cipher
 		update(cipher);
+        // i don't know what this is doing
 		plainText.add("");
 	}
 }

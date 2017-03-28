@@ -25,12 +25,18 @@ public class BlackboardMain {
 		// create the blackboard
 		Blackboard blackboard = new Blackboard();
 
-		// add the knowledge sources 
+		// add the knowledge sources
+		// think i documented it
         blackboard.add_expert(new LetterFrequencyKS(blackboard, "Freq"));
+        // easily documented
         blackboard.add_expert(new SingleLetterWordKS(blackboard, "1Letter"));
+        // communicates with the server
         blackboard.add_expert(new CommonWordsKS(blackboard, "Words"));
+        // decrypts the words into plain text
         blackboard.add_expert(new DecryptKS(blackboard, "decrypt"));
+        // uses plain text and tries to fix the unmatched characters
         blackboard.add_expert(new ReworkKS(blackboard, "rework"));
+		//
         blackboard.add_expert(new AreWeDoneYet(blackboard, "doneYet"));
 
         // create the controller 

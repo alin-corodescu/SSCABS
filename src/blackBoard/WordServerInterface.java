@@ -9,8 +9,6 @@
 // ----------------------------------------------------------------------------------------
 package blackBoard;
 
-import com.typesafe.config.ConfigException;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -63,11 +61,7 @@ public class WordServerInterface {
         String[] words = null;
         char[] test = new char[100000];
         try {
-            try {
-                bufferedWriter.write(pattern + "\n");
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+            bufferedWriter.write(pattern + "\n");
             bufferedWriter.flush();
             socketReader.read(test);
             String line = new String(test);

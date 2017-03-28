@@ -19,14 +19,22 @@ public class SingleLetterWordKS extends KnowledgeSource {
 
 	public SingleLetterWordKS(Blackboard blackboard, String name) {
 		super(blackboard, name);
+		// the only 1 letter words in english
 		Character [] wordArray = {'a', 'i'};
 		words = new ArrayList<Character>(Arrays.asList(wordArray));
 	}
 
+	/**
+	 * contribute only if the top of the cipherList is a single letter word
+	 * @return
+	 */
 	public boolean is_eager_to_contribute() {
 		return cipherList.peek().length() == 1;
 	}
 
+	/**
+	 * update the cipher by adding the only 2 1-letter words in english to the mapping
+	 */
 	public void contribute() {
 		Character word = cipherList.pop().charAt(0);
 		Map<Character, List<Character>> cipher = cipherLetter.getBlankMapping();
