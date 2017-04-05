@@ -70,7 +70,7 @@ public class ReworkKS extends SharedFunctionsKS {
 		// for every word in the word list of the plain text
 		for (int index = 0; index < plainList.length; index++){
 			String word = plainList[index];
-			// if the word length is less than 3?
+			// if the word length is less than 3? -> server can't help
 			if (word.length() <= 3) {
 				continue;
 			}
@@ -95,7 +95,7 @@ public class ReworkKS extends SharedFunctionsKS {
 		}
 		// update the cipher
 		update(cipher);
-        // i don't know what this is doing
+        // clears the plain text
 		plainText.add("");
 	}
 }

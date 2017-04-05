@@ -48,10 +48,6 @@ public class KnowledgeSource {
 	}
 	
 	// needs to be overridden
-
-	/**
-	 * functions used to actually contribute to the cipher
-	 */
 	public void contribute() {
 		System.out.println("Error in:" + this + " contribute() must be implemented in subclass.");
 	}

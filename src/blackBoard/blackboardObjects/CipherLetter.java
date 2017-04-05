@@ -21,7 +21,7 @@ public class CipherLetter extends BlackboardObject {
 	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	
 	// generate a new empty cipher map
-	public Map<Character, List<Character>> getBlankMapping(){
+	public static Map<Character, List<Character>> getBlankMapping(){
 		Map<Character, List<Character>> data = new HashMap<Character, List<Character>>();
 		for (int i = 0; i < 26; i++) {
 			data.put(new Character((char)('a'+i)), new ArrayList<Character>());
@@ -34,7 +34,7 @@ public class CipherLetter extends BlackboardObject {
 	}
 
 	// use the cipherword letters to map the candidate letters in the letterMapping   
-	public Map<Character, List<Character>> addLettersToMapping(Map<Character, List<Character>> letterMapping, String cipherword, String candidate) {
+	public static Map<Character, List<Character>> addLettersToMapping(Map<Character, List<Character>> letterMapping, String cipherword, String candidate) {
 		Map<Character, List<Character>> lm = new HashMap<Character, List<Character>>();
 		for (Map.Entry<Character, List<Character>> e : letterMapping.entrySet()) {
 			if (!lm.containsKey(e.getKey()))
