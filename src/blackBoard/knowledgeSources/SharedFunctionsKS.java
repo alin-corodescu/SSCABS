@@ -17,7 +17,7 @@ import blackBoard.blackboardObjects.TextObject;
 /**
  * Class used to wrap shared functionalities between Knowledge Sources
  */
-public class SharedFunctionsKS extends KnowledgeSource {
+public abstract class SharedFunctionsKS extends KnowledgeSource {
 	/** plain text solved by this KS */
 	protected TextObject plainText;
     /** counter for unresolved words */

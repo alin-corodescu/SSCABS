@@ -1,4 +1,4 @@
-package blackBoard.knowledgeSources;
+package blackBoard.Actors;
 
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.TextObject;
@@ -6,8 +6,6 @@ import blackBoard.blackboardObjects.TextObject;
 import java.util.*;
 
 import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
-import static blackBoard.knowledgeSources.TextUtils.removeMatches;
-import static blackBoard.knowledgeSources.TextUtils.removeNonLetters;
 
 /**
  * Created by alin on 4/5/17.
@@ -15,36 +13,16 @@ import static blackBoard.knowledgeSources.TextUtils.removeNonLetters;
  * in the english language, it works best if the whole ciphered text is passed
  * as a message
  */
-public class LetterFrequencyActor extends UntypedActor implements Contributor {
-    private String frequentCharacters = "etaoinshrdlu";
-
-    @Override
-    public void onReceive(Object message) throws Exception {
-        if (message instanceof TextObject) {
-            // compute the cipher candidate
-            Map<Character, List<Character>> cipher = computeCipher((TextObject) message);
-            // return the cipher candidate to the sender in order to
-            getSender().tell(cipher,getSelf());
-        }
-        else {
-            unhandled(message);
-        }
-    }
-
-    @Override
-    public boolean canDecipher(TextObject text) {
-        // LetterFrequency KS doesn't have any restrictions
-       return true;
-    }
+public class LetterFrequencyActor extends KnowledgeSourceActor{
 
     /**
      * counts the letter frequency in the text passed as parameter
      * @param text text for which to count letter frequency;
      * @return a map containing the frequency of every character in the text
      */
-    public Map<Character, Float> letterFrequency(String text) {
+    private Map<Character, Float> letterFrequency(String text) {
         Map<Character, Float> letterCount = new HashMap<Character, Float>();
-        text = removeMatches(text, " ");  // remove spaces for the calculation
+        text = TextUtils.removeMatches(text, " ");  // remove spaces for the calculation
         float total = text.length();
         for (int i = 0; i < text.length(); i++) {
             Character ch = text.charAt(i);
@@ -56,11 +34,12 @@ public class LetterFrequencyActor extends UntypedActor implements Contributor {
         return letterCount;
     }
 
+    @Override
     public Map<Character, List<Character>> computeCipher(TextObject cipherText) {
         // unwraps the text to decipher
         String cipherString = cipherText.toString();
 
-        cipherString = removeNonLetters(cipherString);
+        cipherString = TextUtils.removeNonLetters(cipherString);
 
         // compute the letter frequency in the cipherString
         Map<Character, Float> letterFrequency = letterFrequency(cipherString);
@@ -83,6 +62,7 @@ public class LetterFrequencyActor extends UntypedActor implements Contributor {
                 break;
             List<Character> arr =  new ArrayList<Character>();
             // add the p most common letter in english ?
+            String frequentCharacters = "etaoinshrdlu";
             arr.add(frequentCharacters.charAt(p));
             // put the mapping in the cipher
             cipher.put(lfEntryList.get(p).getKey(), arr);

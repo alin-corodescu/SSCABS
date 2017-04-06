@@ -17,12 +17,12 @@ import blackBoard.blackboardObjects.CipherList;
 /**
  * each of the knowledge source will maybe offer a cipher key
  */
-public class KnowledgeSource {
+public abstract class KnowledgeSource {
 	private String name;
 	protected Blackboard blackboard;
 	/** actual key of the cipher */
 	protected CipherLetter cipherLetter;
-	/** list of words to decipher - guess */
+	/** list of words to decipher */
 	protected CipherList cipherList;
 	
 	public KnowledgeSource(Blackboard blackboard, String name) {
@@ -36,21 +36,14 @@ public class KnowledgeSource {
 		cipherLetter.update(cipher);		
 	}
 
-	// needs to be overridden
-
 	/**
 	 * function used to check if the knowledge source can contribute to the
 	 * cipher
 	 * @return
 	 */
-	public boolean is_eager_to_contribute() {
-		return false;
-	}
-	
-	// needs to be overridden
-	public void contribute() {
-		System.out.println("Error in:" + this + " contribute() must be implemented in subclass.");
-	}
+	public abstract boolean is_eager_to_contribute();
+
+	public abstract void contribute();
 	
 	public String toString() {
 		return "<K-" + name + ">";

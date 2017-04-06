@@ -1,4 +1,4 @@
-package blackBoard.knowledgeSources;
+package blackBoard.Actors;
 
 import blackBoard.blackboardObjects.TextObject;
 

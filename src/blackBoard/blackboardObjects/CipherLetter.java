@@ -91,7 +91,10 @@ public class CipherLetter extends BlackboardObject {
 		return letterMapping;
 	}
 
-	public Map<Character, List<Character>> intersectMappings(Map<Character, List<Character>> mapA, Map<Character, List<Character>> mapB) {
+	public Map<Character, List<Character>> intersectMappings(
+			Map<Character, List<Character>> mapA,
+			Map<Character, List<Character>> mapB
+			) {
 		Map<Character, List<Character>> intersectedMapping = getBlankMapping();
 		for (int i = 0; i < alphabet.length(); i++) {
 			Character letter = alphabet.charAt(i);

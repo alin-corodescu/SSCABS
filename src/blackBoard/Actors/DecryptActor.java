@@ -1,12 +1,10 @@
-package blackBoard.knowledgeSources;
+package blackBoard.Actors;
 
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.TextObject;
 
 import java.util.List;
 import java.util.Map;
-
-import static blackBoard.knowledgeSources.TextUtils.alphabet;
 
 /**
  * Created by alin on 4/5/17.
@@ -45,13 +43,13 @@ public class DecryptActor extends UntypedActor {
      * translates a message using the key
      * @param key - permutation of the alphabet
      * @param message - message to decrypt
-     * @return decripted message
+     * @return decrypted message
      */
     public String decryptMessage(String key, String message) {
         String translated = "";
         // key is how each letter is mapped -> identic key = key[0] =a; etc
         String charsA = key;
-        String charsB = alphabet;
+        String charsB = TextUtils.alphabet;
         for (int i = 0; i < message.length(); i++) {
             String symbol = message.substring(i,i+1);
             // it should be contained if it is a letter
@@ -74,18 +72,18 @@ public class DecryptActor extends UntypedActor {
      */
     public String decryptWithCipherletterMapping(String ciphertext, Map<Character, List<Character>> letterMapping) {
         /** create a new alphabet permutation */
-        char [] key = new char [alphabet.length()];
+        char [] key = new char [TextUtils.alphabet.length()];
         // set it's default to all equals
-        for (int i = 0; i < alphabet.length(); i++) {
+        for (int i = 0; i < TextUtils.alphabet.length(); i++) {
             key[i] = '=';
         }
         ciphertext = ciphertext.toLowerCase();
         // map each letter of the alphabet with it's mapping
         // needs to be a one to one mapping
-        for (int i = 0; i < alphabet.length(); i++) {
-            Character cipherletter = alphabet.charAt(i);
+        for (int i = 0; i < TextUtils.alphabet.length(); i++) {
+            Character cipherletter = TextUtils.alphabet.charAt(i);
             if (letterMapping.get(cipherletter).size() == 1) {
-                int keyIndex = alphabet.indexOf(letterMapping.get(cipherletter).get(0));
+                int keyIndex = TextUtils.alphabet.indexOf(letterMapping.get(cipherletter).get(0));
                 if (keyIndex > -1) {
                     key[keyIndex] = cipherletter;
                 }

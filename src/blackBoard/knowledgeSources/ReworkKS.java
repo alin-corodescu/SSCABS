@@ -89,6 +89,7 @@ public class ReworkKS extends SharedFunctionsKS {
 					List<Character> temp = new ArrayList<Character>();
 					temp.add(candidate.charAt(pos));
 					// add the new match to cipher mapping
+					// resets the cipher for this letter everytime
 					cipher.put(cipherword.charAt(pos), temp);
 				}
 			}

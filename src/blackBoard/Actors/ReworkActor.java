@@ -1,19 +1,20 @@
-package blackBoard.knowledgeSources;
+package blackBoard.Actors;
 
 import akka.actor.UntypedActor;
 import blackBoard.WordServerInterface;
 import blackBoard.blackboardObjects.Decryption;
-import scala.Char;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
-import static blackBoard.knowledgeSources.TextUtils.getWordPattern;
 
 /**
  * Created by alin on 4/5/17.
+ * Actor used to provide cipher candidates for letters which have not been solved by the other
+ * knowledge sources. It should be used only when the DispatcherActor is in the REWORK phase
+ * @see blackBoard.DispatcherActor
  */
 public class ReworkActor extends UntypedActor {
     private WordServerInterface serverInterface;
@@ -30,7 +31,7 @@ public class ReworkActor extends UntypedActor {
         }
     }
 
-    public String bestMatch(String pattern, String[] words) {
+    private String bestMatch(String pattern, String[] words) {
         String bestWord = "";
         int count;
         int similarity = 0;
@@ -40,9 +41,8 @@ public class ReworkActor extends UntypedActor {
             for (int c = 0; c < pattern.length(); c++) {
                 if (word.charAt(c) == pattern.charAt(c)) {
                     count++;
-                } else if (pattern.charAt(c) == '_') {
-                    continue;
-                } else {
+                } else
+                    if (pattern.charAt(c) != '_') {
                     count = 0;
                     break;
                 }
@@ -58,13 +58,13 @@ public class ReworkActor extends UntypedActor {
     /**
      * this one uses the plain text, not the encrypted one
      */
-    public Map<Character, List<Character>> computeCipher(Decryption decryption) {
+    private Map<Character, List<Character>> computeCipher(Decryption decryption) {
         String plaintext = decryption.decrypted.toString();
         Map<Character, List<Character>> cipher = getBlankMapping();
 
         String cipherword = decryption.encrypted.toString();
         // ask the server about some suggestions
-        String pattern = getWordPattern(cipherword);
+        String pattern = TextUtils.getWordPattern(cipherword);
         // get the response
         String[] words = serverInterface.allPatterns(pattern);
         // find the best match
