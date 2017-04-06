@@ -29,4 +29,10 @@ public class SingleLetterWordsActor extends KnowledgeSourceActor {
         cipher.put(word, words);
         return cipher;
     }
+
+    @Override
+    protected boolean canDecypher(TextObject text) {
+        String string = text.toString();
+        return string.length() == 1;
+    }
 }

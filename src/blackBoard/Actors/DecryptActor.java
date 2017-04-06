@@ -8,6 +8,7 @@ import java.util.Map;
 
 /**
  * Created by alin on 4/5/17.
+ * Actor used to decrypt a text, given a cipher key
  */
 public class DecryptActor extends UntypedActor {
     Map<Character, List<Character>> cipher;
@@ -56,8 +57,7 @@ public class DecryptActor extends UntypedActor {
             if (charsA.contains(symbol)) {
                 int symIndex = charsA.indexOf(symbol);
                 translated += charsB.charAt(symIndex);
-            }
-            else {
+            } else {
                 translated += symbol;
             }
         }

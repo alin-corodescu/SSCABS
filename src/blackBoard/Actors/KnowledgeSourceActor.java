@@ -18,10 +18,22 @@ public abstract class KnowledgeSourceActor extends UntypedActor {
     @Override
     public void onReceive(Object message) throws Exception {
         if (message instanceof TextObject) {
-            Map<Character, List<Character>> cipher = computeCipher((TextObject) message);
-            getSender().tell(cipher, getSelf());
+            // handle only if you can decipher the message
+            if (canDecypher( (TextObject) message)) {
+                Map<Character, List<Character>> cipher = computeCipher((TextObject) message);
+                getSender().tell(cipher, getSelf());
+            }
         } else {
             unhandled(message);
         }
+    }
+
+    /**
+     * checks whether or not the actor can decypher the give text
+     * @param text text to be checked
+     * @return true - if the text can be deciphered, false otherwise
+     */
+    protected boolean canDecypher(TextObject text) {
+        return true;
     }
 }

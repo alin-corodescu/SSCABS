@@ -37,4 +37,10 @@ public class CommonWordsActor extends KnowledgeSourceActor {
         }
         return cipher;
     }
+
+    @Override
+    protected boolean canDecypher(TextObject text) {
+        return text.length() >= 3
+                && !text.toString().contains(" ");
+    }
 }

@@ -2,6 +2,7 @@ package blackBoard.Actors;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import blackBoard.blackboardObjects.Decryption;
 import blackBoard.blackboardObjects.TextObject;
 
 import java.util.List;
@@ -21,9 +22,11 @@ public class TextSplittingActor extends UntypedActor {
                 sendWord(word,getSender());
             }
         }
-        else {
-            unhandled(message);
+        else if (message instanceof Decryption) {
+            // now we need to split into single word (smaller) Decryption
+            // we received just
         }
+        else unhandled(message);
     }
 
     /**
