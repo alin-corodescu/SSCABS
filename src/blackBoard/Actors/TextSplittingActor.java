@@ -21,6 +21,8 @@ public class TextSplittingActor extends UntypedActor {
             for (String word : words) {
                 sendWord(word,getSender());
             }
+            // Tell the sender the word splitting is done
+            getSender().tell(new ControlMessage().setType(ControlMessage.Types.DONE), getSelf());
         }
         else if (message instanceof Decryption) {
             // now we need to split into single word (smaller) Decryption

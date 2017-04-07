@@ -1,5 +1,6 @@
 package blackBoard.Actors;
 
+import akka.actor.Actor;
 import akka.actor.ActorRef;
 
 import java.util.List;
@@ -36,7 +37,6 @@ public class ActorsPool {
      * @param service type of service, used to determine the actor to use
      * @param sender on whose behalf to send the message
      * @param message content of the message
-     * TODO: add a broadcast parameter (send to all), and return the number of actors contacted (so we can count in the dispatcher)
      */
     public void run(ServiceType service, ActorRef sender, Object message) {
         switch (service) {
@@ -47,6 +47,22 @@ public class ActorsPool {
             case DECRYPT:
             case REWORK:
         }
+    }
+
+    /**
+     * Broadcasts a message to all the actors which can provide the type of service specified.
+     * Used when broadcasting ControlMessages (WAITING) especially.
+     * @see ControlMessage.Types
+     * @param service type of service
+     * @param sender on whose behalf to send the broadcast
+     * @param message the message to be broadcasted
+     * @return the number of actors to which the message was broadcasted
+     * - the return could be replaced with a list of ActorRef for more flexibility
+     */
+    public int broadcast(ServiceType service, ActorRef sender, Object message) {
+       int numberOfActors = 0;
+
+       return numberOfActors;
     }
 
     public void setUpDecryptor(Map<Character, List<Character>> cipherKey) {
