@@ -7,7 +7,9 @@ import blackBoard.Actors.ControlMessage;
 import blackBoard.blackboardObjects.CipherLetter;
 import blackBoard.blackboardObjects.Decryption;
 import blackBoard.blackboardObjects.TextObject;
+import scala.Char;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class DispatcherActor extends UntypedActor {
     private int waitingFor = 0;
     private boolean unresolvedLetters = false;
     private String plainText;
-
+    private Map<Character, List<Character>> reworkedCipher;
     private enum Phase {
         WORD_SPLITTING,
         BUILDING_CIPHER,
@@ -58,7 +60,7 @@ public class DispatcherActor extends UntypedActor {
                 case REWORK:
                     // In case I receive a CipherLetter during the Rework phase
                     // postpone the update until all the ciphers are in
-
+                    updateReworkedCipher((CipherLetter) message);
                     break;
             }
         } else {
@@ -89,6 +91,16 @@ public class DispatcherActor extends UntypedActor {
             }
         }
 
+    }
+
+    private void updateReworkedCipher(CipherLetter newCipher) {
+        // keep the exact same logic as in the original program
+        Map<Character, List<Character>> mapping = newCipher.getData();
+
+        // overwrite the existing values (that was the logic in the original version)
+        for (Map.Entry<Character, List<Character>> entry : mapping.entrySet()) {
+            reworkedCipher.put(entry.getKey(),entry.getValue());
+        }
     }
 
     private void handleControlMessage(ControlMessage m) {
@@ -162,7 +174,8 @@ public class DispatcherActor extends UntypedActor {
                         if (unresolvedLetters) {
                             // Enter REWORKING PHASE
                             currentPhase = Phase.REWORK;
-
+                            // reset the reworked cipher
+                            reworkedCipher = new HashMap<>();
                             // Tell the reworkers we are waiting for their responses
                             waitingFor = actorsPool.broadcast(ActorsPool.ServiceType.REWORK, getSelf(), new ControlMessage().setType(WAITING));
                         }
@@ -175,12 +188,9 @@ public class DispatcherActor extends UntypedActor {
                         waitingFor--;
                         // if all the reworkers finished
                         if (waitingFor == 0) {
-                            // function used to combine all the reworked ciphers into a single one
-                            /*
-                            Map<Character, List<Character>> reworkedCipher = reworkCipher();
+                            // update the mainCipher with the reworked one
                             mainCipher.update(reworkedCipher);
 
-                            */
                             // this block will trigger a new decryption sequence
                             currentPhase = Phase.BUILDING_CIPHER;
                             waitingFor = 1;
