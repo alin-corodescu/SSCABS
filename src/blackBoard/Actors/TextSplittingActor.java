@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.Decryption;
 import blackBoard.blackboardObjects.TextObject;
+import scala.Char;
 
 import java.util.List;
 
@@ -27,8 +28,38 @@ public class TextSplittingActor extends UntypedActor {
         else if (message instanceof Decryption) {
             // now we need to split into single word (smaller) Decryption
             // we received just
+            generateSingleWordDecryptions((Decryption) message);
         }
         else unhandled(message);
+    }
+
+    private void generateSingleWordDecryptions(Decryption message) {
+        String plainText = message.decrypted.toString();
+        String cipherText = message.encrypted.toString();
+
+        assert(plainText.length() == cipherText.length());
+
+        String encryptedWord = "", decryptedWord = "";
+        for (int i = 0; i < plainText.length(); i++) {
+            // new word begins
+            // TODO check cause there might be errors with references here
+            Character currentChar = cipherText.charAt(i);
+            if (currentChar == ' ') {
+                if (!encryptedWord.isEmpty())
+                {
+                    getSender().tell(new Decryption(encryptedWord,decryptedWord), getSelf());
+                }
+                encryptedWord = "";
+                decryptedWord = "";
+            }
+            // if it's a letter add it to the words
+            else if (currentChar >= 'a'
+                    && currentChar <= 'z') {
+                encryptedWord.concat(Character.toString(currentChar));
+                decryptedWord.concat(Character.toString(plainText.charAt(i)));
+            }
+
+        }
     }
 
     /**

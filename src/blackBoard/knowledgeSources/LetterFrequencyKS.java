@@ -67,7 +67,7 @@ public class LetterFrequencyKS extends SharedFunctionsKS {
 		String nonletter;
 		// unwraps the text to decipher
 		String ciphertext = cipherText.toString(); //   .get().toString();
-		ciphertext = ciphertext.toLowerCase();
+		ciphertext = ciphertext.toLowerCase(); // here it goes to lower case
 		//remove the letters from the text
 		nonletter = removeMatches(ciphertext, alphabet);
 		//clean up

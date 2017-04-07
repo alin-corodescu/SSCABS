@@ -9,6 +9,7 @@ import blackBoard.blackboardObjects.Decryption;
 import blackBoard.blackboardObjects.TextObject;
 import scala.Char;
 
+import java.io.BufferedWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,10 @@ public class DispatcherActor extends UntypedActor {
     private boolean unresolvedLetters = false;
     private String plainText;
     private Map<Character, List<Character>> reworkedCipher;
+    /**
+     * BufferedWriter used to print the plain text output
+     */
+    private BufferedWriter outputWriter;
     private enum Phase {
         WORD_SPLITTING,
         BUILDING_CIPHER,
@@ -40,11 +45,11 @@ public class DispatcherActor extends UntypedActor {
     private ActorsPool actorsPool;
     private TextObject cipherText;
 
-    public DispatcherActor() {
+    public DispatcherActor(BufferedWriter writer, ActorsPool actorsPool) {
         mainCipher = new CipherLetter();
         currentPhase = Phase.WORD_SPLITTING;
-        // TODO probably pass the actorPool as parameter for the constructor
-        actorsPool = new ActorsPool();
+        outputWriter = writer;
+        this.actorsPool = actorsPool;
         cipherText = new TextObject();
     }
 
