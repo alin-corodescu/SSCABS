@@ -7,6 +7,8 @@ import javax.xml.soap.Text;
 import java.util.List;
 import java.util.Map;
 
+import static blackBoard.Actors.ControlMessage.Types.DONE;
+
 /**
  * Created by alin on 4/6/17.
  * Abstract class representing the base for Knowledge Source actors
@@ -23,7 +25,17 @@ public abstract class KnowledgeSourceActor extends UntypedActor {
                 Map<Character, List<Character>> cipher = computeCipher((TextObject) message);
                 getSender().tell(cipher, getSelf());
             }
-        } else {
+        } else if (message instanceof ControlMessage) {
+            ControlMessage controlMessage = (ControlMessage) message;
+            // if any other actor is waiting on this one
+            if (controlMessage.getType() == ControlMessage.Types.WAITING)
+            {
+                // send back a message that we are done processing
+                // otherwise the Waiting message wouldn't have been processed
+                getSender().tell(new ControlMessage().setType(DONE),getSelf());
+            }
+        }
+        else {
             unhandled(message);
         }
     }

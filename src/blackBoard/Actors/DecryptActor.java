@@ -1,10 +1,14 @@
 package blackBoard.Actors;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.TextObject;
+import scala.Char;
 
 import java.util.List;
 import java.util.Map;
+
+import static blackBoard.Actors.ControlMessage.Types.DONE;
 
 /**
  * Created by alin on 4/5/17.
@@ -21,13 +25,17 @@ public class DecryptActor extends UntypedActor {
         this.cipher = cipher;
     }
 
+    public static Props props(Map<Character, List<Character>> cipher) {
+        return Props.create(DecryptActor.class, cipher);
+    }
+
     @Override
     public void onReceive(Object message) throws Exception {
         if (message instanceof TextObject) {
             String decryption = decryptMessage((TextObject) message);
-            TextObject wrapped = new TextObject();
-            wrapped.add(decryption);
-            getSender().tell(wrapped,getSelf());
+            ControlMessage doneMessage = new ControlMessage().setType(DONE);
+            doneMessage.setData(decryption);
+            getSender().tell(doneMessage,getSelf());
         }
         else {
             unhandled(message);

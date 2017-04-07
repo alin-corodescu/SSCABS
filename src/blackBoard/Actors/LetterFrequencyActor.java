@@ -1,5 +1,6 @@
 package blackBoard.Actors;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.TextObject;
 
@@ -14,6 +15,11 @@ import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
  * as a message
  */
 public class LetterFrequencyActor extends KnowledgeSourceActor{
+
+
+    public static Props props() {
+        return Props.create(LetterFrequencyActor.class);
+    }
 
     /**
      * counts the letter frequency in the text passed as parameter

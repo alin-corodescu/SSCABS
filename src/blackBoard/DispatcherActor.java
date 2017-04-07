@@ -1,8 +1,10 @@
 package blackBoard;
 
 import akka.actor.ActorRef;
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.Actors.ActorsPool;
+import blackBoard.Actors.CommonWordsActor;
 import blackBoard.Actors.ControlMessage;
 import blackBoard.blackboardObjects.CipherLetter;
 import blackBoard.blackboardObjects.Decryption;
@@ -10,6 +12,8 @@ import blackBoard.blackboardObjects.TextObject;
 import scala.Char;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +35,7 @@ public class DispatcherActor extends UntypedActor {
     /**
      * BufferedWriter used to print the plain text output
      */
-    private BufferedWriter outputWriter;
+    private PrintWriter outputWriter;
     private enum Phase {
         WORD_SPLITTING,
         BUILDING_CIPHER,
@@ -45,7 +49,12 @@ public class DispatcherActor extends UntypedActor {
     private ActorsPool actorsPool;
     private TextObject cipherText;
 
-    public DispatcherActor(BufferedWriter writer, ActorsPool actorsPool) {
+    public static Props props(PrintWriter writer, ActorsPool actorsPool) {
+        return Props.create(DispatcherActor.class,writer,actorsPool);
+    }
+
+
+    public DispatcherActor(PrintWriter writer, ActorsPool actorsPool) {
         mainCipher = new CipherLetter();
         currentPhase = Phase.WORD_SPLITTING;
         outputWriter = writer;
@@ -131,8 +140,7 @@ public class DispatcherActor extends UntypedActor {
                         // No problem with the atomicity of the operations because of the message queue style.
                         // Before processing the DONE message, it will modify the waitingFor integer
                         // Count the number of actors we are waiting a response from
-                        waitingFor = 1;
-                        actorsPool.broadcast(ActorsPool.ServiceType.LETTER_FREQUENCY, getSelf(), waiting);
+                        waitingFor = actorsPool.broadcast(ActorsPool.ServiceType.LETTER_FREQUENCY, getSelf(), waiting);
                         waitingFor += actorsPool.broadcast(ActorsPool.ServiceType.SINGLE_LETTER, getSelf(), waiting);
                         waitingFor += actorsPool.broadcast(ActorsPool.ServiceType.COMMON_WORDS, getSelf(), waiting);
                         break;
@@ -185,7 +193,8 @@ public class DispatcherActor extends UntypedActor {
                             waitingFor = actorsPool.broadcast(ActorsPool.ServiceType.REWORK, getSelf(), new ControlMessage().setType(WAITING));
                         }
                         else{
-                            // return the plain  text somehow
+                            // we are finished, print the plain text
+                            outputWriter.write(plainText);
                         }
                         break;
                     case REWORK:

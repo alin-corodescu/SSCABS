@@ -1,5 +1,6 @@
 package blackBoard.Actors;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.WordServerInterface;
 import blackBoard.blackboardObjects.TextObject;
@@ -22,6 +23,10 @@ public class CommonWordsActor extends KnowledgeSourceActor {
      */
     public CommonWordsActor() {
         serverInterface = new WordServerInterface();
+    }
+
+    public static Props props() {
+        return Props.create(CommonWordsActor.class);
     }
 
     public Map<Character, List<Character>> computeCipher(TextObject textObject) {

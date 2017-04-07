@@ -1,8 +1,10 @@
 package blackBoard.Actors;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.WordServerInterface;
 import blackBoard.blackboardObjects.Decryption;
+import blackBoard.blackboardObjects.TextObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +18,26 @@ import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
  * knowledge sources. It should be used only when the DispatcherActor is in the REWORK phase
  * @see blackBoard.DispatcherActor
  */
-public class ReworkActor extends UntypedActor {
+public class ReworkActor extends KnowledgeSourceActor {
     private WordServerInterface serverInterface;
 
     public ReworkActor() {
         serverInterface = new WordServerInterface();
     }
+
+    public static Props props() {
+        return Props.create(ReworkActor.class);
+    }
+
+    /**
+     * Cannot compute a cipher based on a textObject, it needs to be a decryption
+     */
+    @Override
+    protected Map<Character, List<Character>> computeCipher(TextObject text) {
+        // This one cannot compute a cipher based on a TextObject
+        return null;
+    }
+
     @Override
     public void onReceive(Object message) throws Exception {
         if (message instanceof Decryption) {

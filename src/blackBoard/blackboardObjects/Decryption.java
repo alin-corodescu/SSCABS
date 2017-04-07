@@ -1,5 +1,7 @@
 package blackBoard.blackboardObjects;
 
+import blackBoard.Actors.DecryptActor;
+
 import javax.xml.soap.Text;
 
 /**
@@ -9,6 +11,11 @@ import javax.xml.soap.Text;
  */
 public class Decryption {
     public TextObject encrypted, decrypted;
+    public Decryption() {
+        // those 2 lines might not be necessary
+        encrypted = new TextObject();
+        decrypted = new TextObject();
+    }
     public Decryption(String encrypted, String decrypted) {
         this.encrypted = new TextObject();
         this.decrypted = new TextObject();

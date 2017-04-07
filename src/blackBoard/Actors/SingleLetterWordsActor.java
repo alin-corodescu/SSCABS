@@ -1,5 +1,6 @@
 package blackBoard.Actors;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.Actors.KnowledgeSourceActor;
 import blackBoard.blackboardObjects.TextObject;
@@ -21,6 +22,11 @@ public class SingleLetterWordsActor extends KnowledgeSourceActor {
         Character [] wordArray = {'a', 'i'};
         words = new ArrayList<Character>(Arrays.asList(wordArray));
     }
+
+    public static Props props() {
+        return Props.create(SingleLetterWordsActor.class);
+    }
+
 
 
     public Map<Character, List<Character>> computeCipher(TextObject text) {

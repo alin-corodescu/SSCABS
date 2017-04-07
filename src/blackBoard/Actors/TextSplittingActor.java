@@ -1,6 +1,7 @@
 package blackBoard.Actors;
 
 import akka.actor.ActorRef;
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.Decryption;
 import blackBoard.blackboardObjects.TextObject;
@@ -14,6 +15,11 @@ import static blackBoard.Actors.TextUtils.splitIntoWords;
  * Created by alin on 4/6/17.
  */
 public class TextSplittingActor extends UntypedActor {
+
+
+    public static Props props() {
+        return Props.create(TextSplittingActor.class);
+    }
 
     @Override
     public void onReceive(Object message) throws Exception {
@@ -29,6 +35,8 @@ public class TextSplittingActor extends UntypedActor {
             // now we need to split into single word (smaller) Decryption
             // we received just
             generateSingleWordDecryptions((Decryption) message);
+            // we are done splitting the decryption
+            getSender().tell(new ControlMessage().setType(ControlMessage.Types.DONE), getSelf());
         }
         else unhandled(message);
     }
@@ -59,6 +67,10 @@ public class TextSplittingActor extends UntypedActor {
                 decryptedWord.concat(Character.toString(plainText.charAt(i)));
             }
 
+        }
+        if (!encryptedWord.isEmpty())
+        {
+            getSender().tell(new Decryption(encryptedWord,decryptedWord), getSelf());
         }
     }
 
