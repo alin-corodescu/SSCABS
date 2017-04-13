@@ -3,6 +3,7 @@ package blackBoard.Actors;
 import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import blackBoard.WordServerInterface;
 
 import javax.xml.ws.Service;
 import java.util.*;
@@ -44,23 +45,25 @@ public class ActorsPool {
         List<ActorRef> currentActors;
 
         currentActors = new ArrayList<>();
-        currentActors.add(actorSystem.actorOf(LetterFrequencyActor.props()));
+        currentActors.add(actorSystem.actorOf(LetterFrequencyActor.props(),"Letter_Frequency"));
         actors.put(ServiceType.LETTER_FREQUENCY, currentActors);
 
         currentActors = new ArrayList<>();
-        currentActors.add(actorSystem.actorOf(SingleLetterWordsActor.props()));
+        currentActors.add(actorSystem.actorOf(SingleLetterWordsActor.props(), "Single_Letter"));
         actors.put(ServiceType.SINGLE_LETTER, currentActors);
 
         currentActors = new ArrayList<>();
-        currentActors.add(actorSystem.actorOf(CommonWordsActor.props()));
+        WordServerInterface serverInterface = new WordServerInterface();
+        currentActors.add(actorSystem.actorOf(CommonWordsActor.props(serverInterface),"Common_words"));
         actors.put(ServiceType.COMMON_WORDS, currentActors);
 
         currentActors = new ArrayList<>();
-        currentActors.add(actorSystem.actorOf(ReworkActor.props()));
+        serverInterface = new WordServerInterface();
+        currentActors.add(actorSystem.actorOf(ReworkActor.props(serverInterface),"Rework"));
         actors.put(ServiceType.REWORK, currentActors);
 
         currentActors = new ArrayList<>();
-        currentActors.add(actorSystem.actorOf(TextSplittingActor.props()));
+        currentActors.add(actorSystem.actorOf(TextSplittingActor.props(), "Splitter"));
         actors.put(ServiceType.SPLIT, currentActors);
 
 
@@ -120,7 +123,7 @@ public class ActorsPool {
         List<ActorRef> decryptors;
 
         decryptors = new ArrayList<>();
-        decryptors.add(actorSystem.actorOf(DecryptActor.props(cipherKey)));
+        decryptors.add(actorSystem.actorOf(DecryptActor.props(cipherKey),"Decryptor"));
         actors.put(ServiceType.DECRYPT, decryptors);
 
     }

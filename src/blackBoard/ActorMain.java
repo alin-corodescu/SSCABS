@@ -72,7 +72,11 @@ public class ActorMain {
         startMessage.setData(message);
 
         dispathcer.tell(startMessage, ActorRef.noSender());
-
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (args.length == 0) {
             System.out.println("\nTo decrypt from a file pass the filename as a command line arguement. Eg:");
             System.out.println("java sscabs cipherFile.txt\nor\njava sscabs cipherText.txt plainText.txt");

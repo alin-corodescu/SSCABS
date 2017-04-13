@@ -21,12 +21,12 @@ public class CommonWordsActor extends KnowledgeSourceActor {
     /**
      * constructor which initializes connection with the server
      */
-    public CommonWordsActor() {
-        serverInterface = new WordServerInterface();
+    public CommonWordsActor(WordServerInterface serverInterface) {
+        this.serverInterface = serverInterface;
     }
 
-    public static Props props() {
-        return Props.create(CommonWordsActor.class);
+    public static Props props(WordServerInterface serverInterface) {
+        return Props.create(CommonWordsActor.class, serverInterface);
     }
 
     public Map<Character, List<Character>> computeCipher(TextObject textObject) {

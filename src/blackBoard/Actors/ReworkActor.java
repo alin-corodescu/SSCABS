@@ -21,12 +21,12 @@ import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
 public class ReworkActor extends KnowledgeSourceActor {
     private WordServerInterface serverInterface;
 
-    public ReworkActor() {
-        serverInterface = new WordServerInterface();
+    public ReworkActor(WordServerInterface serverInterface) {
+        this.serverInterface = serverInterface;
     }
 
-    public static Props props() {
-        return Props.create(ReworkActor.class);
+    public static Props props(WordServerInterface serverInterface) {
+        return Props.create(ReworkActor.class, serverInterface);
     }
 
     /**
