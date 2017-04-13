@@ -3,6 +3,7 @@ package blackBoard.Actors;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.TextObject;
+import scala.Char;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ import java.util.*;
  * Actor class used to split text into words
  * could be renamed
  */
-abstract class TextUtils {
+public abstract class TextUtils {
     static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
     /**
@@ -21,7 +22,6 @@ abstract class TextUtils {
      */
     static List<String> splitIntoWords(TextObject text) {
         List<String> wordList = new ArrayList<>();
-
         String nonletter;
         // unwraps the text to decipher
         String cipherText = text.toString();
@@ -46,7 +46,7 @@ abstract class TextUtils {
         //clean up
         nonletter = removeDupes(nonletter);
         // let only letters in the ciphertext
-        text = removeMatches(text, nonletter.trim());
+        text = removeMatches(text, nonletter.replace(" ", ""));
         return text;
     }
 
@@ -105,5 +105,27 @@ abstract class TextUtils {
             }
         }
         return newStr;
+    }
+
+    /**
+     * Adds spaces after each non-letter symbol to facilitate word splitting
+     * e.g : Without this, abc.def would be considered a single word "abcdef"
+     * @param text
+     * @return
+     */
+    public static String addSpacesAfterSymbols(String text) {
+        StringBuilder builder = new StringBuilder();
+        text = text.toLowerCase();
+        for (int i = 0; i < text.length(); i++)
+        {
+            Character c = text.charAt(i);
+            builder.append(c);
+            if (! (c >= 'a' && c <= 'z')
+                    && !(" ".contains(Character.toString(c)))
+                    ) {
+                builder.append(' ');
+            }
+        }
+        return builder.toString();
     }
 }

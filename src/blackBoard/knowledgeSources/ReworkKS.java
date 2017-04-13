@@ -63,7 +63,7 @@ public class ReworkKS extends SharedFunctionsKS {
 		String nonletters = removeMatches(plaintext, alphabet + "_");
 		//get a list of words in the plain text
 		nonletters = removeDupes(nonletters);
-		plaintext = removeMatches(plaintext, nonletters.trim());
+		plaintext = removeMatches(plaintext, nonletters.replace(" ",""));
 		String [] plainList = plaintext.split(" ");
 		Map<Character, List<Character>> cipher = cipherLetter.getBlankMapping();
 

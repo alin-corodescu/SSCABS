@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import blackBoard.Actors.ActorsPool;
 import blackBoard.Actors.ControlMessage;
+import blackBoard.Actors.TextUtils;
 import blackBoard.blackboardObjects.TextObject;
 import blackBoard.knowledgeSources.*;
 
@@ -24,13 +25,13 @@ public class ActorMain {
         PrintWriter outputWriter = null;
         if (args.length >= 1){
             try {
-                FileReader fileReader = new FileReader(args[1]);
+                FileReader fileReader = new FileReader(args[0]);
                 BufferedReader reader = new BufferedReader(fileReader);
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (!message.isEmpty())
-                        message.concat("\n");
-                    message.concat(line);
+                        message = message.concat("\n");
+                    message = message.concat(line);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -40,7 +41,7 @@ public class ActorMain {
 
             if (args.length == 2) {
                 try {
-                    outputWriter = new PrintWriter(new FileOutputStream(args[2]));
+                    outputWriter = new PrintWriter(new FileOutputStream(args[1]));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -66,9 +67,10 @@ public class ActorMain {
         ActorSystem system = ActorSystem.create("decipherator");
 
         ActorsPool pool = new ActorsPool(system);
-        ActorRef dispathcer = system.actorOf(DispatcherActor.props(outputWriter, pool));
+        ActorRef dispathcer = system.actorOf(DispatcherActor.props(outputWriter, pool), "Dispatcher");
 
         ControlMessage startMessage = new ControlMessage().setType(ControlMessage.Types.START);
+        message = TextUtils.addSpacesAfterSymbols(message);
         startMessage.setData(message);
 
         dispathcer.tell(startMessage, ActorRef.noSender());

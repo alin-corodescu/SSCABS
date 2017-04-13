@@ -61,10 +61,10 @@ public class TextSplittingActor extends UntypedActor {
                 decryptedWord = "";
             }
             // if it's a letter add it to the words
-            else if (currentChar >= 'a'
-                    && currentChar <= 'z') {
-                encryptedWord.concat(Character.toString(currentChar));
-                decryptedWord.concat(Character.toString(plainText.charAt(i)));
+            else if ((currentChar >= 'a'
+                    && currentChar <= 'z') || (currentChar >= 'A' && currentChar <= 'Z')) {
+                encryptedWord = encryptedWord.concat(Character.toString(currentChar));
+                decryptedWord = decryptedWord.concat(Character.toString(plainText.charAt(i)));
             }
 
         }

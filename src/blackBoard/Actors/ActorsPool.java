@@ -123,7 +123,7 @@ public class ActorsPool {
         List<ActorRef> decryptors;
 
         decryptors = new ArrayList<>();
-        decryptors.add(actorSystem.actorOf(DecryptActor.props(cipherKey),"Decryptor"));
+        decryptors.add(actorSystem.actorOf(DecryptActor.props(cipherKey)));
         actors.put(ServiceType.DECRYPT, decryptors);
 
     }

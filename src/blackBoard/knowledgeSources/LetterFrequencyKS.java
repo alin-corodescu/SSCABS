@@ -73,7 +73,7 @@ public class LetterFrequencyKS extends SharedFunctionsKS {
 		//clean up
 		nonletter = removeDupes(nonletter);
 		// let only letters in the ciphertext
-		ciphertext = removeMatches(ciphertext, nonletter.trim());
+		ciphertext = removeMatches(ciphertext, nonletter.replace(" ", ""));
 
 		// compute the letter frequency in the ciphertext
 		Map<Character, Float> lf = letterFrequency(ciphertext);

@@ -6,9 +6,7 @@ import akka.actor.UntypedActor;
 import blackBoard.Actors.ActorsPool;
 import blackBoard.Actors.CommonWordsActor;
 import blackBoard.Actors.ControlMessage;
-import blackBoard.blackboardObjects.CipherLetter;
-import blackBoard.blackboardObjects.Decryption;
-import blackBoard.blackboardObjects.TextObject;
+import blackBoard.blackboardObjects.*;
 import scala.Char;
 
 import java.io.BufferedWriter;
@@ -20,6 +18,7 @@ import java.util.Map;
 
 import static blackBoard.Actors.ControlMessage.Types.DONE;
 import static blackBoard.Actors.ControlMessage.Types.WAITING;
+import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
 
 
 /**
@@ -31,7 +30,7 @@ public class DispatcherActor extends UntypedActor {
     private int waitingFor = 0;
     private boolean unresolvedLetters = false;
     private String plainText;
-    private Map<Character, List<Character>> reworkedCipher;
+    private ReworkAlgorithm reworker;
     /**
      * BufferedWriter used to print the plain text output
      */
@@ -60,6 +59,7 @@ public class DispatcherActor extends UntypedActor {
         outputWriter = writer;
         this.actorsPool = actorsPool;
         cipherText = new TextObject();
+        reworker = new OriginalReworkAlgorithm(); // instantiate here
     }
 
     @Override
@@ -74,7 +74,7 @@ public class DispatcherActor extends UntypedActor {
                 case REWORK:
                     // In case I receive a CipherLetter during the Rework phase
                     // postpone the update until all the ciphers are in
-                    updateReworkedCipher((CipherLetter) message);
+                    reworker.addNewCipher(((CipherLetter) message).getData());
                     break;
             }
         } else {
@@ -97,7 +97,7 @@ public class DispatcherActor extends UntypedActor {
             // phase == DECRYPT
             else if (message instanceof Decryption) {
                 Decryption decryption = (Decryption) message;
-                if (decryption.toString().contains("_")) {
+                if (decryption.decrypted.toString().contains("_")) {
                     unresolvedLetters = true;
                     // if there is an unsolved letter, send it to the rework actor
                     actorsPool.run(ActorsPool.ServiceType.REWORK, getSelf(), decryption);
@@ -107,15 +107,7 @@ public class DispatcherActor extends UntypedActor {
 
     }
 
-    private void updateReworkedCipher(CipherLetter newCipher) {
-        // keep the exact same logic as in the original program
-        Map<Character, List<Character>> mapping = newCipher.getData();
 
-        // overwrite the existing values (that was the logic in the original version)
-        for (Map.Entry<Character, List<Character>> entry : mapping.entrySet()) {
-            reworkedCipher.put(entry.getKey(),entry.getValue());
-        }
-    }
 
     private void handleControlMessage(ControlMessage m) {
         switch (m.getType()) {
@@ -188,13 +180,14 @@ public class DispatcherActor extends UntypedActor {
                             // Enter REWORKING PHASE
                             currentPhase = Phase.REWORK;
                             // reset the reworked cipher
-                            reworkedCipher = new HashMap<>();
+                            reworker.newReworkPhase();
                             // Tell the reworkers we are waiting for their responses
                             waitingFor = actorsPool.broadcast(ActorsPool.ServiceType.REWORK, getSelf(), new ControlMessage().setType(WAITING));
                         }
                         else{
                             // we are finished, print the plain text
                             outputWriter.write(plainText);
+                            outputWriter.flush();
                         }
                         break;
                     case REWORK:
@@ -203,7 +196,7 @@ public class DispatcherActor extends UntypedActor {
                         // if all the reworkers finished
                         if (waitingFor == 0) {
                             // update the mainCipher with the reworked one
-                            mainCipher.update(reworkedCipher);
+                            mainCipher.update(reworker.getCipher());
 
                             // this block will trigger a new decryption sequence
                             currentPhase = Phase.BUILDING_CIPHER;

@@ -3,6 +3,7 @@ package blackBoard.Actors;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.WordServerInterface;
+import blackBoard.blackboardObjects.CipherLetter;
 import blackBoard.blackboardObjects.Decryption;
 import blackBoard.blackboardObjects.TextObject;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static blackBoard.Actors.ControlMessage.Types.DONE;
 import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
 
 /**
@@ -42,9 +44,23 @@ public class ReworkActor extends KnowledgeSourceActor {
     public void onReceive(Object message) throws Exception {
         if (message instanceof Decryption) {
             // received a decryption to rework
-            Map<Character,List<Character>> cipher = computeCipher((Decryption) message);
-            getSender().tell(cipher,getSelf());
+            if (((Decryption) message).decrypted.length() > 3) {
+                Map<Character, List<Character>> cipher = computeCipher((Decryption) message);
+                CipherLetter cipherLetter = new CipherLetter();
+                cipherLetter.update(cipher);
+                getSender().tell(cipherLetter, getSelf());
+            }
+        } else if (message instanceof ControlMessage) {
+            ControlMessage controlMessage = (ControlMessage) message;
+            // if any other actor is waiting on this one
+            if (controlMessage.getType() == ControlMessage.Types.WAITING)
+            {
+                // send back a message that we are done processing
+                // otherwise the Waiting message wouldn't have been processed
+                getSender().tell(new ControlMessage().setType(DONE),getSelf());
+            }
         }
+        else {unhandled(message);}
     }
 
     private String bestMatch(String pattern, String[] words) {

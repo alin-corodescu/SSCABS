@@ -16,6 +16,8 @@ import blackBoard.knowledgeSources.ReworkKS;
 import blackBoard.knowledgeSources.SingleLetterWordKS;
 import blackBoard.blackboardObjects.TextObject;
 
+import static blackBoard.Actors.TextUtils.addSpacesAfterSymbols;
+
 public class BlackboardMain {
 
 	/**
@@ -49,14 +51,10 @@ public class BlackboardMain {
         }
         else {
         	// example decryption for your instruction
-		    String message = "Sy l nlx sr pyyacao l ylwj eiswi upar lulsxrj isr sxrjsxwjr, ia " +
-		               "esmm rwctjsxsza sj wmpramh, lxo txmarr jia aqsoaxwa sr pqaceiamn" +
-		               "sxu, ia esmm caytra jp famsaqa sj. Sy, px jia pjiac ilxo, ia sr " +
-		               "pyyacao rpnajisxu eiswi lyypcor l calrpx ypc lwjsxu sx lwwpcolxw" +
-		               "a jp isr sxrjsxwjr, ia esmm lwwabj sj aqax px jia rmsuijarj aqso" +
-		               "axwa. Jia pcsusx py nhjir sr agbmlsxao sx jisr elh. -Facjclxo Ct" +
-		               "rramm";
+		    String message = "\"Wifv cuixb’g mihgm, cht,\" mub Mbdhx ghyz.\"Gi ym yg,\" Hvmfvi ghyz.\"Afbgg wif’z ebmmbv xim xbbz kb mubx.\"Hzh’g cuixb ohg xim mihgm.Yx mub qhv, ub ptyccbz ym icbx hxz guiobz ym uyg ehzab mubx ohymbz h kikbxm ouytb ym nbvypybz uyg yzbxmymw oymu mub Giqyht Uhvkixw evhyxg.Ixqb ym uhz, ym gcyttbz ymg afmg.Gub’z qhttbz mub thgm BdqfgbQtfe xfkebv h kixmu ebpivb hxz ub’z uhz ym zygqixxbqmbz.H obbs thmbv, gub ohg qhttyxa mub xbo xfkebv, moyqb kivb ebpivb ub qhfaum ubv.Gikboubvb yx muhm obbs, gub’z khzb qixmhqm oymu gikbixb oui’z aynbx ubv mub xbo xfkebv.Ym qiftz uhnb ebbx h pvybxz hm gquiit" +
+					" mitz ubv phqb-mi-phqb, efm yp ub ohg tfqsw, ym ohg ew cuixb.";
 			TextObject cipher = (TextObject) blackboard.layer("cipherText");
+			message = addSpacesAfterSymbols(message);
 			cipher.add(message);
 			
 			// launch the controller to decrypt the message 

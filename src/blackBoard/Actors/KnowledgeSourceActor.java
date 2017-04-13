@@ -1,6 +1,7 @@
 package blackBoard.Actors;
 
 import akka.actor.UntypedActor;
+import blackBoard.blackboardObjects.CipherLetter;
 import blackBoard.blackboardObjects.TextObject;
 
 import javax.xml.soap.Text;
@@ -23,7 +24,9 @@ public abstract class KnowledgeSourceActor extends UntypedActor {
             // handle only if you can decipher the message
             if (canDecypher( (TextObject) message)) {
                 Map<Character, List<Character>> cipher = computeCipher((TextObject) message);
-                getSender().tell(cipher, getSelf());
+                CipherLetter cipherLetter = new CipherLetter();
+                cipherLetter.update(cipher);
+                getSender().tell(cipherLetter, getSelf());
             }
         } else if (message instanceof ControlMessage) {
             ControlMessage controlMessage = (ControlMessage) message;
