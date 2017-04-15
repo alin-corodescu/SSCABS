@@ -59,7 +59,7 @@ public class DispatcherActor extends UntypedActor {
         outputWriter = writer;
         this.actorsPool = actorsPool;
         cipherText = new TextObject();
-        reworker = new OriginalReworkAlgorithm(); // instantiate here
+        reworker = new MajorityReworkAlgorithm(); // instantiate here
     }
 
     @Override

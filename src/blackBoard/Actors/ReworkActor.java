@@ -44,7 +44,7 @@ public class ReworkActor extends KnowledgeSourceActor {
     public void onReceive(Object message) throws Exception {
         if (message instanceof Decryption) {
             // received a decryption to rework
-            if (((Decryption) message).decrypted.length() > 3) {
+            if (((Decryption) message).decrypted.length() >= 3) {
                 Map<Character, List<Character>> cipher = computeCipher((Decryption) message);
                 CipherLetter cipherLetter = new CipherLetter();
                 cipherLetter.update(cipher);
@@ -73,10 +73,6 @@ public class ReworkActor extends KnowledgeSourceActor {
             for (int c = 0; c < pattern.length(); c++) {
                 if (word.charAt(c) == pattern.charAt(c)) {
                     count++;
-                } else
-                    if (pattern.charAt(c) != '_') {
-                    count = 0;
-                    break;
                 }
             }
             if (count > similarity) {

@@ -45,7 +45,7 @@ public class CommonWordsActor extends KnowledgeSourceActor {
 
     @Override
     protected boolean canDecypher(TextObject text) {
-        return text.length() > 3
+        return text.length() >= 3
                 && !text.toString().contains(" ");
     }
 }

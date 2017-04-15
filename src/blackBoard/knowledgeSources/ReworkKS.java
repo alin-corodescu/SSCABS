@@ -39,6 +39,7 @@ public class ReworkKS extends SharedFunctionsKS {
 					continue;
 				}
 				else {
+				    // this here makes no sense
 					count = 0;
 					break;
 				}				

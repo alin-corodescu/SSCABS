@@ -121,7 +121,7 @@ public abstract class TextUtils {
             Character c = text.charAt(i);
             builder.append(c);
             if (! (c >= 'a' && c <= 'z')
-                    && !(" ".contains(Character.toString(c)))
+                    && !("' ".contains(Character.toString(c))) // add or remove symbols in the hardcoded string
                     ) {
                 builder.append(' ');
             }

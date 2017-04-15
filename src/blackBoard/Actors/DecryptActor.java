@@ -3,6 +3,7 @@ package blackBoard.Actors;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import blackBoard.blackboardObjects.TextObject;
+import com.typesafe.config.ConfigException;
 import scala.Char;
 
 import java.util.List;
@@ -91,7 +92,8 @@ public class DecryptActor extends UntypedActor {
         for (int i = 0; i < TextUtils.alphabet.length(); i++) {
             Character cipherletter = TextUtils.alphabet.charAt(i);
             if (letterMapping.get(cipherletter).size() == 1) {
-                int keyIndex = TextUtils.alphabet.indexOf(letterMapping.get(cipherletter).get(0));
+                int keyIndex = -1;
+                keyIndex = TextUtils.alphabet.indexOf(letterMapping.get(cipherletter).get(0));
                 if (keyIndex > -1) {
                     key[keyIndex] = cipherletter;
                 }
