@@ -108,7 +108,10 @@ public class DispatcherActor extends UntypedActor {
     }
 
 
-
+    /**
+     * Function used to contain the logic used when handling control messages, see report for more details on how
+     * those messages are handled
+     */
     private void handleControlMessage(ControlMessage m) {
         switch (m.getType()) {
             case START:

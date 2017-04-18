@@ -27,8 +27,7 @@ public class SingleLetterWordsActor extends KnowledgeSourceActor {
         return Props.create(SingleLetterWordsActor.class);
     }
 
-
-
+    @Override
     public Map<Character, List<Character>> computeCipher(TextObject text) {
         Character word = text.toString().charAt(0);
         Map<Character, List<Character>> cipher = getBlankMapping();

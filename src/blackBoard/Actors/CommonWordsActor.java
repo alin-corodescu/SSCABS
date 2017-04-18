@@ -19,16 +19,22 @@ public class CommonWordsActor extends KnowledgeSourceActor {
     private WordServerInterface serverInterface;
 
     /**
-     * constructor which initializes connection with the server
+     * Constructor with a already connected WordServerInterface, to be used when communicating with the server
      */
     public CommonWordsActor(WordServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
 
+    /**
+     * Function used to build a Props of the actor
+     * @param serverInterface - already initialised (connected) WordServerInterface
+     * @return Props of this actor
+     */
     public static Props props(WordServerInterface serverInterface) {
         return Props.create(CommonWordsActor.class, serverInterface);
     }
 
+    @Override
     public Map<Character, List<Character>> computeCipher(TextObject textObject) {
         Map<Character, List<Character>> cipher = getBlankMapping(); // make an empty cipher map
         String word = textObject.toString();

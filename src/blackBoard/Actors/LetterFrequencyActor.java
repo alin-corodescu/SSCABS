@@ -17,12 +17,15 @@ import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
 public class LetterFrequencyActor extends KnowledgeSourceActor{
 
 
+    /**
+     * Creates a props of LetterFrequencyActor
+     */
     public static Props props() {
         return Props.create(LetterFrequencyActor.class);
     }
 
     /**
-     * counts the letter frequency in the text passed as parameter
+     * Counts the letter frequency in the text passed as parameter
      * @param text text for which to count letter frequency;
      * @return a map containing the frequency of every character in the text
      */

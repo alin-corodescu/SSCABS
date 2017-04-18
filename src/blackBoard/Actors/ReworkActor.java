@@ -23,10 +23,20 @@ import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
 public class ReworkActor extends KnowledgeSourceActor {
     private WordServerInterface serverInterface;
 
+    /**
+     * Constructor which takes a WordServerInterface as parameter, to be used when communicating with the server
+     * The WordServerInterface needs to have the connection to the server already set up
+     * @param serverInterface - WordServerInterface to be used
+     */
     public ReworkActor(WordServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
 
+    /**
+     * Creates a Props of the ReworkActor which uses the WordServerInterface passed as parameter
+     * @param serverInterface - WordServerInterface to be used by this actor
+     * @return Props of ReworkActor
+     */
     public static Props props(WordServerInterface serverInterface) {
         return Props.create(ReworkActor.class, serverInterface);
     }
@@ -63,6 +73,12 @@ public class ReworkActor extends KnowledgeSourceActor {
         else {unhandled(message);}
     }
 
+    /**
+     * Computes the best match of the pattern with the words array, by comparing the number of similar letters
+     * @param pattern word for which to find the best match in the list
+     * @param words array of words from which to select the best match
+     * @return the best matching word from the array
+     */
     private String bestMatch(String pattern, String[] words) {
         String bestWord = "";
         int count;
@@ -83,9 +99,6 @@ public class ReworkActor extends KnowledgeSourceActor {
         return bestWord;
     }
 
-    /**
-     * this one uses the plain text, not the encrypted one
-     */
     private Map<Character, List<Character>> computeCipher(Decryption decryption) {
         String plaintext = decryption.decrypted.toString();
         Map<Character, List<Character>> cipher = getBlankMapping();

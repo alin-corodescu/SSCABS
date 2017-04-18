@@ -13,6 +13,8 @@ import static blackBoard.Actors.TextUtils.splitIntoWords;
 
 /**
  * Created by alin on 4/6/17.
+ * Actor used to split cipher text into separate words or the decyphered text into decryptions
+ * @see Decryption
  */
 public class TextSplittingActor extends UntypedActor {
 
@@ -41,6 +43,10 @@ public class TextSplittingActor extends UntypedActor {
         else unhandled(message);
     }
 
+    /**
+     * Splits a whole text decryptions into single word Decryptions which are sent to the sender of the current message
+     * @param message Decryption containing full text
+     */
     private void generateSingleWordDecryptions(Decryption message) {
         String plainText = message.decrypted.toString();
         String cipherText = message.encrypted.toString();
@@ -75,7 +81,7 @@ public class TextSplittingActor extends UntypedActor {
     }
 
     /**
-     * method used to send words extracted from the text to the listener
+     * Method used to send words extracted from the text to the listener
      * @param word word to be sent to the listener
      * @param destination ActorRef of the listener
      */

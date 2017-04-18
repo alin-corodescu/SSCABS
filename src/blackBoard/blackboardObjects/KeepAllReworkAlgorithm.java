@@ -26,9 +26,6 @@ public class KeepAllReworkAlgorithm extends ReworkAlgorithm {
 
     /**
      * Computes the distinct reunion of the 2 lists passed as parameters
-     * @param a
-     * @param b
-     * @return
      */
     private List<Character> union(List<Character> a, List<Character> b) {
         List<Character> result = new ArrayList<>();
