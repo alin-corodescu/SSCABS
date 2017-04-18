@@ -54,6 +54,9 @@ public class MajorityReworkAlgorithm extends ReworkAlgorithm {
         return constructedCipher;
     }
 
+    /**
+     * Selects the best candidate from the mapping of "votes"
+     */
     private Character selectCandidate(Map<Character, Integer> candidates) {
         int maximum = 0;
         Character bestCandidate = null;

@@ -12,19 +12,25 @@ import java.util.*;
  * Created by alin on 4/6/17.
  * Serves as an interface between the Knowledge Source actors and the Dispatcher
  * This abstractions allows for easier scalability (by distributing the workload between
- * multiple actors of the same type - where possible)
+ * multiple actors of the same type - where possible).
  */
 public class ActorsPool {
+    /**
+     * Checks whether this actor pool has been provided with a cipher to be used for decryption
+     * @return true if there is has been a cipher provided, false otherwise
+     */
     public boolean isDecryptorSet() {
         return isDecryptorSet;
     }
 
-    public void setDecryptorSet(boolean decryptorSet) {
-        this.isDecryptorSet = decryptorSet;
-    }
-
+    /**
+     * Flag representing whether or not the decryption actor(s) have been provided a cipher
+     */
     private boolean isDecryptorSet = false;
 
+    /**
+     * Reference to the actor system used by this actor pool
+     */
     private ActorSystem actorSystem;
 
     /**
@@ -34,13 +40,20 @@ public class ActorsPool {
      */
     private Map<ServiceType, List<ActorRef>> actors;
 
-
+    /**
+     * Constructor taking an Actor System as parameter to be used when spawning new actors
+     * @param actorSystem - reference to the actor system to be used
+     * @see ActorSystem
+     */
     public ActorsPool(ActorSystem actorSystem) {
         this.actorSystem = actorSystem;
         actors = new HashMap<>();
         createActors();
     }
 
+    /**
+     * Method used to enclose the actor creation process
+     */
     private void createActors() {
         List<ActorRef> currentActors;
 
@@ -71,6 +84,9 @@ public class ActorsPool {
 
     }
 
+    /**
+     * Enums containing the types of services offered by this actor pool
+     */
     public enum ServiceType {
         LETTER_FREQUENCY,
         SINGLE_LETTER,
@@ -116,12 +132,15 @@ public class ActorsPool {
        return numberOfActors;
     }
 
+    /**
+     * Function used to initialise the decryption actor of this pool with a new cipher
+     * This function sets the flag isDecryptorSet to true
+     * @param cipherKey - cipher to be used when decrypting messages
+     */
     public void setUpDecryptor(Map<Character, List<Character>> cipherKey) {
         // create as many Decryptors as you need with the given cipher
         isDecryptorSet = true;
-
         List<ActorRef> decryptors;
-
         decryptors = new ArrayList<>();
         decryptors.add(actorSystem.actorOf(DecryptActor.props(cipherKey)));
         actors.put(ServiceType.DECRYPT, decryptors);

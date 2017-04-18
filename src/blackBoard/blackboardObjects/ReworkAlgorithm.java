@@ -13,12 +13,23 @@ public abstract class ReworkAlgorithm {
 
     protected Map<Character,List<Character>> constructedCipher;
 
+    /**
+     * Add a new cipher to be processed by the algorithm
+    * @param cipher - the cipher to be processed
+     */
     public abstract void addNewCipher(Map<Character, List<Character>> cipher);
 
+    /**
+     * Method used to query the algorithm for the cipher, can be overriden
+     * @return - the cipher computed by the algorithm
+     */
     public Map<Character, List<Character>> getCipher() {
         return constructedCipher;
     }
 
+    /**
+     * Method called when a new reworking phase begins
+     */
     public void newReworkPhase() {
         constructedCipher = getBlankMapping();
     }

@@ -66,6 +66,11 @@ public class DispatcherActor extends UntypedActor {
     public void onReceive(Object message) throws Exception {
         if (message instanceof CipherLetter) {
             switch (currentPhase) {
+                case WORD_SPLITTING:
+                    // In case I receive a CipherLetter during decyphering phase
+                    // just update the current mainCipher;
+                    mainCipher.update(((CipherLetter) message).getData());
+                    break;
                 case BUILDING_CIPHER:
                     // In case I receive a CipherLetter during decyphering phase
                     // just update the current mainCipher;
@@ -108,7 +113,10 @@ public class DispatcherActor extends UntypedActor {
     }
 
 
-
+    /**
+     * Function used to contain the logic used when handling control messages, see report for more details on how
+     * those messages are handled
+     */
     private void handleControlMessage(ControlMessage m) {
         switch (m.getType()) {
             case START:

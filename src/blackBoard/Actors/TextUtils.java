@@ -9,8 +9,7 @@ import java.util.*;
 
 /**
  * Created by alin on 4/4/17.
- * Actor class used to split text into words
- * could be renamed
+ * Class containing methods which help working with texts
  */
 public abstract class TextUtils {
     static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -22,7 +21,6 @@ public abstract class TextUtils {
      */
     static List<String> splitIntoWords(TextObject text) {
         List<String> wordList = new ArrayList<>();
-        String nonletter;
         // unwraps the text to decipher
         String cipherText = text.toString();
 
@@ -33,7 +31,7 @@ public abstract class TextUtils {
     }
 
     /**
-     * removes the non-letters characters from the text
+     * Removes the non-letters characters from the text.
      * ignores the spaces
      * @param text text to remove symbols from
      * @return processed String
@@ -73,7 +71,7 @@ public abstract class TextUtils {
     }
 
     /**
-     * removes characters of the second string from the first string
+     * Removes characters of the second string from the first string
      * @param inStr string to remove characters from
      * @param remvStr character to remove
      * @return newly created string
@@ -95,7 +93,9 @@ public abstract class TextUtils {
         return newStr;
     }
 
-    // removes duplicate characters from a string
+    /**
+     * Removes duplicate characters from a string
+     */
     private static String removeDupes(String myStr) {
         String newStr = "";
         for (int i = 0; i < myStr.length(); i++) {

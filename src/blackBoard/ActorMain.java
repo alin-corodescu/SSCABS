@@ -17,9 +17,6 @@ import java.io.*;
  */
 public class ActorMain {
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
         String message = "";
         PrintWriter outputWriter = null;

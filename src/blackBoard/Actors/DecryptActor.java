@@ -19,13 +19,18 @@ public class DecryptActor extends UntypedActor {
     Map<Character, List<Character>> cipher;
 
     /**
-     * constructor which passes a cipher to be used for decryption
+     * Constructor which passes a cipher to be used for decryption
      * @param cipher cipher to be used for decription
      */
     public DecryptActor(Map<Character, List<Character>> cipher) {
         this.cipher = cipher;
     }
 
+    /**
+     * Method used to create Props of this actor
+     * @param cipher - cipher to be used when constructing the instance
+     * @return Props of DecryptActor
+     */
     public static Props props(Map<Character, List<Character>> cipher) {
         return Props.create(DecryptActor.class, cipher);
     }
@@ -43,6 +48,10 @@ public class DecryptActor extends UntypedActor {
         }
     }
 
+    /**
+     * Method called to decrypt text contained in a TextObject
+     * @return the plain text (result) of the decryption
+     */
     private String decryptMessage(TextObject textObject) {
         String message = textObject.toString();
         String plainText = decryptWithCipherletterMapping(message, cipher);
@@ -50,7 +59,7 @@ public class DecryptActor extends UntypedActor {
     }
 
     /**
-     * translates a message using the key
+     * Translates a message using the key
      * @param key - permutation of the alphabet
      * @param message - message to decrypt
      * @return decrypted message
@@ -76,8 +85,8 @@ public class DecryptActor extends UntypedActor {
     /**
      *
      * @param ciphertext text to decipher
-     * @param letterMapping one to one letter mapping
-     * @return
+     * @param letterMapping cipher to be used when deciphering
+     * @return the "plain text" - result of the decryption
      */
     public String decryptWithCipherletterMapping(String ciphertext, Map<Character, List<Character>> letterMapping) {
         /** create a new alphabet permutation */

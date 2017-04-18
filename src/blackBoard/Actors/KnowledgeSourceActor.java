@@ -16,6 +16,11 @@ import static blackBoard.Actors.ControlMessage.Types.DONE;
  */
 public abstract class KnowledgeSourceActor extends UntypedActor {
 
+    /**
+     * Computes with a new candidate cipher based on the TextObject passed as parameter
+     * @param text - TextObject to base the cipher creation on
+     * @return - newly created cipher
+     */
     protected abstract Map<Character, List<Character>> computeCipher(TextObject text);
 
     @Override
@@ -44,7 +49,7 @@ public abstract class KnowledgeSourceActor extends UntypedActor {
     }
 
     /**
-     * checks whether or not the actor can decypher the give text
+     * Checks whether or not the actor can decypher the given text
      * @param text text to be checked
      * @return true - if the text can be deciphered, false otherwise
      */
