@@ -76,7 +76,8 @@ public class ReworkActor extends KnowledgeSourceActor {
     }
 
     /**
-     * Computes the best match of the pattern with the words array, by comparing the number of similar letters
+     * Computes the best match of the pattern with the words array,
+     * by comparing the number of similar letters
      * @param pattern word for which to find the best match in the list
      * @param words array of words from which to select the best match
      * @return the best matching word from the array

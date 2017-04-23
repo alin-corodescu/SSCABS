@@ -110,8 +110,8 @@ public abstract class TextUtils {
     /**
      * Adds spaces after each non-letter symbol to facilitate word splitting
      * e.g : Without this, abc.def would be considered a single word "abcdef"
-     * @param text
-     * @return
+     * @param text text to modify
+     * @return the modifed text
      */
     public static String addSpacesAfterSymbols(String text) {
         StringBuilder builder = new StringBuilder();
@@ -121,7 +121,8 @@ public abstract class TextUtils {
             Character c = text.charAt(i);
             builder.append(c);
             if (! (c >= 'a' && c <= 'z')
-                    && !("' ".contains(Character.toString(c))) // add or remove symbols in the hardcoded string
+                    && !("' ".contains(Character.toString(c)))
+                // add or remove symbols in the hardcoded string
                     ) {
                 builder.append(' ');
             }
