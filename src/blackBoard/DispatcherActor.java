@@ -196,6 +196,8 @@ public class DispatcherActor extends UntypedActor {
                             // we are finished, print the plain text
                             outputWriter.write(plainText);
                             outputWriter.flush();
+                            // shut down the actors
+                            actorsPool.shutdown();
                         }
                         break;
                     case REWORK:

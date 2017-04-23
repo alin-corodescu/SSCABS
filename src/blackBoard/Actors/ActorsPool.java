@@ -15,6 +15,11 @@ import java.util.*;
  * multiple actors of the same type - where possible).
  */
 public class ActorsPool {
+
+    /**
+     * List of active connections to the server
+     */
+    List<WordServerInterface> activeConnections;
     /**
      * Checks whether this actor pool has been provided with a cipher to be used for decryption
      * @return true if there is has been a cipher provided, false otherwise
@@ -46,6 +51,7 @@ public class ActorsPool {
      * @see ActorSystem
      */
     public ActorsPool(ActorSystem actorSystem) {
+        activeConnections = new ArrayList<>();
         this.actorSystem = actorSystem;
         actors = new HashMap<>();
         createActors();
@@ -67,11 +73,13 @@ public class ActorsPool {
 
         currentActors = new ArrayList<>();
         WordServerInterface serverInterface = new WordServerInterface();
+        activeConnections.add(serverInterface);
         currentActors.add(actorSystem.actorOf(CommonWordsActor.props(serverInterface),"Common_words"));
         actors.put(ServiceType.COMMON_WORDS, currentActors);
 
         currentActors = new ArrayList<>();
         serverInterface = new WordServerInterface();
+        activeConnections.add(serverInterface);
         currentActors.add(actorSystem.actorOf(ReworkActor.props(serverInterface),"Rework"));
         actors.put(ServiceType.REWORK, currentActors);
 
@@ -145,5 +153,13 @@ public class ActorsPool {
         decryptors.add(actorSystem.actorOf(DecryptActor.props(cipherKey)));
         actors.put(ServiceType.DECRYPT, decryptors);
 
+    }
+
+    /**
+     * Shuts down the actor system and it's associated server connections
+     */
+    public void shutdown() {
+        actorSystem.shutdown();
+        activeConnections.get(0).shutdown();
     }
 }

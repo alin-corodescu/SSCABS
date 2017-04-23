@@ -72,4 +72,15 @@ public class WordServerInterface {
         }
         return words;
     }
+
+    public void shutdown() {
+        try {
+            bufferedWriter.write("0.1.0.1.0.1\n");
+            bufferedWriter.flush();
+            socketReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
