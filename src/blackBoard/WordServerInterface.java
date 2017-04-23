@@ -42,13 +42,13 @@ public class WordServerInterface {
             if (!connected) {
                 String line = socketReader.readLine();
                 String[] tokens = line.split("\\+");
-                System.out.println("Line received : " + tokens[0] + " " + tokens[1]);
+                //System.out.println("Line received : " + tokens[0] + " " + tokens[1]);
                 token = tokens[1];
                 token = token.substring(0, token.length() - 1);
                 String connectionString = "<" + " 1700331" + "*" + token + ">" + "\n";
                 bufferedWriter.write(connectionString);
-                bufferedWriter.flush(); //TODO mark this flush as "bug"
-                System.out.println(socketReader.readLine());
+                bufferedWriter.flush();
+                //System.out.println(socketReader.readLine());
                 connected = true;
             }
         } catch (IOException e) {
