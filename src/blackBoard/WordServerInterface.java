@@ -48,7 +48,7 @@ public class WordServerInterface {
                 String connectionString = "<" + " 1700331" + "*" + token + ">" + "\n";
                 bufferedWriter.write(connectionString);
                 bufferedWriter.flush();
-                //System.out.println(socketReader.readLine());
+                socketReader.readLine();
                 connected = true;
             }
         } catch (IOException e) {
