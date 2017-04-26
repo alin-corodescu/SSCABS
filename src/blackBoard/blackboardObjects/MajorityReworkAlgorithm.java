@@ -12,9 +12,13 @@ import static blackBoard.blackboardObjects.CipherLetter.getBlankMapping;
  * Rework algorithm which selects the candidate with most votes for each character that needs replacing
  */
 public class MajorityReworkAlgorithm extends ReworkAlgorithm {
+    /**
+     * Mapping of a character with it's possible candidates, each with it's own number of votes
+     */
     private Map<Character, Map<Character, Integer>> votes = new HashMap<>();
     @Override
     public void addNewCipher(Map<Character, List<Character>> cipher) {
+        // Updates the map containing the votes
         for (Map.Entry<Character,List<Character>> entry : cipher.entrySet()) {
             Character key = entry.getKey();
             List<Character> candidates = entry.getValue();

@@ -74,6 +74,10 @@ public class BlackboardMain {
 			System.out.println("Example decryption:\n" + message + "\nbecomes:\n" + plainText);
 			System.out.println("\nTo decrypt from a file pass the filename as a command line arguement. Eg:");
 			System.out.println("java sscabs cipherFile.txt\nor\njava sscabs cipherText.txt plainText.txt");
+
+
+			System.out.println("THIS IS THE MAIN CLASS FOR THE IMPLEMENTATION WITHOUT ACTORS.");
+			System.out.println("FOR THE ACTOR IMPLEMENTATION, USE ActorMain class");
         }
 	}
 }

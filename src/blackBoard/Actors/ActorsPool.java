@@ -13,6 +13,8 @@ import java.util.*;
  * Serves as an interface between the Knowledge Source actors and the Dispatcher
  * This abstractions allows for easier scalability (by distributing the workload between
  * multiple actors of the same type - where possible).
+ * Possible improvement - extract some methods/members into an abstract class for easier implementation switchin
+ * in case there are any other implementations (suggested in the report) - similar to the ReworkAlgorithm class
  */
 public class ActorsPool {
 

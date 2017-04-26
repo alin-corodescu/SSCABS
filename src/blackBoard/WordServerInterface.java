@@ -73,6 +73,9 @@ public class WordServerInterface {
         return words;
     }
 
+    /**
+     * Method called to do the necessary steps to shut down communication with the server
+     */
     public void shutdown() {
         try {
             bufferedWriter.write("0.1.0.1.0.1\n");
